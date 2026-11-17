@@ -37,6 +37,9 @@
         "sort-packages": true
     },
     "scripts": {
-        "test": "pest"
+        "test": "pest",
+        "migrate": "phinx migrate",
+        "migrate:rollback": "phinx rollback",
+        "migrate:status": "phinx status"
     }
 }

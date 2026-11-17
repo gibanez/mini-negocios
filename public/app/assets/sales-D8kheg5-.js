@@ -1,0 +1,1 @@
+import{a}from"./client-B69qBxZA.js";function r(e={}){const t=new URLSearchParams;e.date&&t.set("date",e.date);const s=t.toString();return a.get("/sales"+(s?"?"+s:""))}function c(e){return a.get(`/sales/${e}`)}function o(e){return a.post("/sales",e)}function l(e,t){return a.post(`/sales/${e}/cancel`,{reason:t})}export{l as a,c as b,o as c,r as g};

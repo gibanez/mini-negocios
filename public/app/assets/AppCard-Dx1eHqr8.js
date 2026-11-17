@@ -1,0 +1,1 @@
+import{_ as s,o as c,c as r,y as o,z as t}from"./index-ciKsAdvH.js";const l={__name:"AppCard",props:{clickable:{type:Boolean,default:!1}},setup(a){return(e,p)=>(c(),r("div",t({class:["card",{clickable:a.clickable}]},e.$attrs),[o(e.$slots,"default",{},void 0)],16))}},d=s(l,[["__scopeId","data-v-09822522"]]);export{d as A};

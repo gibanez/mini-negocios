@@ -8,7 +8,7 @@ use Gaby\Apps\Api\Auth\Domain\TokenGeneratorInterface;
 
 final class FakeTokenGenerator implements TokenGeneratorInterface
 {
-    public function generate(string $subjectId, string $email): string
+    public function generate(string $subjectId, string $email, string $storeId, string $role): string
     {
         return 'token-' . $subjectId;
     }

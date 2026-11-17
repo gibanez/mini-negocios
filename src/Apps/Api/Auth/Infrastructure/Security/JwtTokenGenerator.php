@@ -22,18 +22,20 @@ final class JwtTokenGenerator implements TokenGeneratorInterface
         $this->ttl = $ttl > 0 ? $ttl : 3600;
     }
 
-    public function generate(string $subjectId, string $email): string
+    public function generate(string $subjectId, string $email, string $storeId, string $role): string
     {
         $now = new DateTimeImmutable();
 
         $token = $this->configuration->builder()
-            ->issuedBy('php-ddd-base')
-            ->permittedFor('php-ddd-base')
+            ->issuedBy('despensa')
+            ->permittedFor('despensa')
             ->relatedTo($subjectId)
             ->issuedAt($now)
             ->canOnlyBeUsedAfter($now)
             ->expiresAt($now->modify('+' . $this->ttl . ' seconds'))
-            ->withClaim('email', $email)
+            ->withClaim('email',   $email)
+            ->withClaim('storeId', $storeId)
+            ->withClaim('role',    $role)
             ->getToken($this->configuration->signer(), $this->configuration->signingKey());
 
         return $token->toString();

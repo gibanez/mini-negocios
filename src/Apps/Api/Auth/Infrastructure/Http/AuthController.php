@@ -25,9 +25,9 @@ final class AuthController
 
     public function login(Request $request, Response $response): Response
     {
-        $data = (array) $request->getParsedBody();
-        $email = isset($data['email']) ? trim((string) $data['email']) : '';
-        $password = isset($data['password']) ? (string) $data['password'] : '';
+        $data     = (array) $request->getParsedBody();
+        $email    = isset($data['email'])    ? trim((string) $data['email'])  : '';
+        $password = isset($data['password']) ? (string) $data['password']     : '';
 
         if ($email === '' || $password === '') {
             return $this->json($response, ['error' => 'Email and password are required.'], 422);
@@ -41,7 +41,7 @@ final class AuthController
 
         return $this->json($response, [
             'token' => $result->token,
-            'admin' => $result->admin,
+            'user'  => $result->user,
         ]);
     }
 }

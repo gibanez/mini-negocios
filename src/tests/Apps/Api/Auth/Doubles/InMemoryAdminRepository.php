@@ -24,8 +24,25 @@ final class InMemoryAdminRepository implements AdminRepositoryInterface
                 return $admin;
             }
         }
-
         return null;
+    }
+
+    public function findAllByStoreId(string $storeId): array
+    {
+        return array_values(array_filter($this->admins, function ($a) use ($storeId): bool {
+            return $a->storeId() === $storeId;
+        }));
+    }
+
+    public function countActiveOwnersByStoreId(string $storeId): int
+    {
+        $count = 0;
+        foreach ($this->admins as $admin) {
+            if ($admin->storeId() === $storeId && $admin->isOwner() && $admin->isActive()) {
+                $count++;
+            }
+        }
+        return $count;
     }
 
     public function save(Admin $admin): void

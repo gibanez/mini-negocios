@@ -6,5 +6,5 @@ namespace Gaby\Apps\Api\Auth\Domain;
 
 interface TokenGeneratorInterface
 {
-    public function generate(string $subjectId, string $email): string;
+    public function generate(string $subjectId, string $email, string $storeId, string $role): string;
 }

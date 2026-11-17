@@ -10,14 +10,14 @@ final class LoginResult
     public $token;
 
     /** @var array<string, string> */
-    public $admin;
+    public $user;
 
     /**
-     * @param array<string, string> $admin
+     * @param array<string, string> $user
      */
-    public function __construct(string $token, array $admin)
+    public function __construct(string $token, array $user)
     {
         $this->token = $token;
-        $this->admin = $admin;
+        $this->user  = $user;
     }
 }

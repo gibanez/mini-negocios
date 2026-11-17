@@ -7,6 +7,7 @@ namespace Gaby\Apps\Api\Auth\Application\Login;
 use Gaby\Apps\Api\Admin\Domain\AdminRepositoryInterface;
 use Gaby\Apps\Api\Auth\Domain\Exception\InvalidCredentialsException;
 use Gaby\Apps\Api\Auth\Domain\TokenGeneratorInterface;
+use Gaby\Apps\Api\Store\Domain\StoreRepositoryInterface;
 
 final class LoginHandler
 {
@@ -16,10 +17,17 @@ final class LoginHandler
     /** @var TokenGeneratorInterface */
     private $tokens;
 
-    public function __construct(AdminRepositoryInterface $admins, TokenGeneratorInterface $tokens)
-    {
+    /** @var StoreRepositoryInterface */
+    private $stores;
+
+    public function __construct(
+        AdminRepositoryInterface $admins,
+        TokenGeneratorInterface $tokens,
+        StoreRepositoryInterface $stores
+    ) {
         $this->admins = $admins;
         $this->tokens = $tokens;
+        $this->stores = $stores;
     }
 
     public function handle(LoginCommand $command): LoginResult
@@ -34,12 +42,23 @@ final class LoginHandler
             throw InvalidCredentialsException::create();
         }
 
-        $token = $this->tokens->generate($admin->id(), $admin->email());
+        $storeId = $admin->storeId();
+        $store   = $storeId !== null ? $this->stores->findById($storeId) : null;
+
+        if ($store !== null && !$store->isActive()) {
+            throw InvalidCredentialsException::suspended();
+        }
+
+        $token = $this->tokens->generate($admin->id(), $admin->email(), (string) $storeId, $admin->role());
 
         return new LoginResult($token, [
-            'id' => $admin->id(),
-            'name' => $admin->name(),
-            'email' => $admin->email(),
+            'id'                  => $admin->id(),
+            'name'                => $admin->name(),
+            'email'               => $admin->email(),
+            'role'                => $admin->role(),
+            'storeId'             => $storeId,
+            'onboardingCompleted' => $store ? $store->onboardingCompleted() : false,
+            'theme'               => $store ? $store->theme() : 'verde',
         ]);
     }
 }

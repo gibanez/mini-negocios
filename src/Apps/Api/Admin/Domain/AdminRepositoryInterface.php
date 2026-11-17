@@ -10,5 +10,12 @@ interface AdminRepositoryInterface
 
     public function findByEmail(string $email): ?Admin;
 
+    /** @return Admin[] */
+    public function findAllByStoreId(string $storeId): array;
+
+    public function countActiveOwnersByStoreId(string $storeId): int;
+
     public function save(Admin $admin): void;
+
+    public function deleteById(string $id): void;
 }

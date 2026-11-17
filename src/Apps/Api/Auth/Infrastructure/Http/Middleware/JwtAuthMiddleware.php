@@ -25,7 +25,7 @@ final class JwtAuthMiddleware implements MiddlewareInterface
 
     public function __construct(Configuration $configuration, ResponseFactoryInterface $responseFactory)
     {
-        $this->configuration = $configuration;
+        $this->configuration   = $configuration;
         $this->responseFactory = $responseFactory;
     }
 
@@ -50,18 +50,24 @@ final class JwtAuthMiddleware implements MiddlewareInterface
             $this->configuration->validator()->assert($token, new ValidAt(SystemClock::fromUTC()));
 
             $subject = $token->claims()->get('sub');
+            $storeId = (string) ($token->claims()->get('storeId') ?? '');
+            $role    = (string) ($token->claims()->get('role') ?? '');
         } catch (Throwable $error) {
             return $this->unauthorized('Invalid or expired token.');
         }
 
-        return $handler->handle($request->withAttribute('adminId', $subject));
+        return $handler->handle(
+            $request
+                ->withAttribute('adminId', $subject)
+                ->withAttribute('storeId', $storeId)
+                ->withAttribute('role', $role)
+        );
     }
 
     private function unauthorized(string $message): ResponseInterface
     {
         $response = $this->responseFactory->createResponse(401);
         $response->getBody()->write((string) json_encode(['error' => $message]));
-
         return $response->withHeader('Content-Type', 'application/json; charset=utf-8');
     }
 }

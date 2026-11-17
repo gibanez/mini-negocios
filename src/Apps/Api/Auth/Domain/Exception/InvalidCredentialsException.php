@@ -10,6 +10,11 @@ final class InvalidCredentialsException extends RuntimeException
 {
     public static function create(): self
     {
-        return new self('Invalid email or password.');
+        return new self('Invalid credentials.');
+    }
+
+    public static function suspended(): self
+    {
+        return new self('This store is suspended.');
     }
 }

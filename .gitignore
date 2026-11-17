@@ -1,6 +1,9 @@
 # Dependencias
 /vendor/
 /node_modules/
+**/node_modules/
+frontend/node_modules/
+admin/node_modules/
 
 # Entorno y secretos
 /.env
@@ -17,8 +20,10 @@
 *.zip
 *.rar
 
-# Builds de frontend (si se agregan apps con build)
+# Builds de frontend
 /public/_astro/
+/public/assets/
+/public/admin/assets/
 
 # Herramientas
 .phpunit.result.cache

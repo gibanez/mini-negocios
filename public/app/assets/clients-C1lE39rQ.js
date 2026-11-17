@@ -1,0 +1,1 @@
+import{a as e}from"./client-B69qBxZA.js";function c(t){const n=t?"?search="+encodeURIComponent(t):"";return e.get("/clients"+n)}function s(t){return e.post("/clients",t)}function o(t,n){return e.put(`/clients/${t}`,n)}function r(t){return e.delete(`/clients/${t}`)}export{s as c,r as d,c as g,o as u};

@@ -1,0 +1,1 @@
+import{_ as s,o as n,c as o,a}from"./index-ciKsAdvH.js";const r={},c={class:"loading-wrap"};function t(_,e){return n(),o("div",c,[...e[0]||(e[0]=[a("div",{class:"spinner"},null,-1)])])}const i=s(r,[["render",t],["__scopeId","data-v-12010f68"]]);export{i as L};
