@@ -14,5 +14,6 @@ return array_merge(
     require __DIR__ . '/CLI/Infrastructure/definitions.php',
     require __DIR__ . '/VEN/Infrastructure/definitions.php',
     require __DIR__ . '/FIA/Infrastructure/definitions.php',
+    require __DIR__ . '/GAS/Infrastructure/definitions.php',
     require __DIR__ . '/PLA/Infrastructure/definitions.php'
 );

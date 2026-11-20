@@ -29,6 +29,8 @@ const routes = [
   { path: '/clientes/:id', name: 'clientEdit', component: () => import('@/views/fiado/ClientFormView.vue') },
   { path: '/fiado/:clientId', name: 'fiadoAccount', component: () => import('@/views/fiado/FiadoAccountView.vue') },
 
+  { path: '/gastos', name: 'expenses', component: () => import('@/views/expenses/ExpensesView.vue') },
+
   // Platform admin
   { path: '/admin', name: 'adminDash', component: () => import('@/views/admin/AdminDashView.vue'), meta: { requiresPlatformAdmin: true } },
   { path: '/admin/stores/:id', name: 'adminStore', component: () => import('@/views/admin/AdminStoreView.vue'), meta: { requiresPlatformAdmin: true } },

@@ -23,5 +23,6 @@ $app->group('/api', function (RouteCollectorProxy $group): void {
     require __DIR__ . '/CLI/Infrastructure/routes.php';
     require __DIR__ . '/VEN/Infrastructure/routes.php';
     require __DIR__ . '/FIA/Infrastructure/routes.php';
+    require __DIR__ . '/GAS/Infrastructure/routes.php';
     require __DIR__ . '/PLA/Infrastructure/routes.php';
 });
