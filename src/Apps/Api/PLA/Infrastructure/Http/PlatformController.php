@@ -11,6 +11,8 @@ use Gaby\Apps\Api\PLA\Application\CreateStoreAdmin\CreateStoreAdminCommand;
 use Gaby\Apps\Api\PLA\Application\CreateStoreAdmin\CreateStoreAdminHandler;
 use Gaby\Apps\Api\PLA\Application\DeactivateAdmin\DeactivateAdminCommand;
 use Gaby\Apps\Api\PLA\Application\DeactivateAdmin\DeactivateAdminHandler;
+use Gaby\Apps\Api\PLA\Application\ImpersonateAdmin\ImpersonateAdminCommand;
+use Gaby\Apps\Api\PLA\Application\ImpersonateAdmin\ImpersonateAdminHandler;
 use Gaby\Apps\Api\PLA\Application\GetStats\GetStatsHandler;
 use Gaby\Apps\Api\PLA\Application\GetStats\GetStatsQuery;
 use Gaby\Apps\Api\PLA\Application\GetStore\GetStoreHandler;
@@ -59,6 +61,9 @@ final class PlatformController
     /** @var DeactivateAdminHandler */
     private $deactivateAdminHandler;
 
+    /** @var ImpersonateAdminHandler */
+    private $impersonateHandler;
+
     public function __construct(
         ListStoresHandler $listHandler,
         GetStoreHandler $getHandler,
@@ -68,7 +73,8 @@ final class PlatformController
         UpdateStoreHandler $updateStoreHandler,
         ListStoreAdminsHandler $listAdminsHandler,
         CreateStoreAdminHandler $createAdminHandler,
-        DeactivateAdminHandler $deactivateAdminHandler
+        DeactivateAdminHandler $deactivateAdminHandler,
+        ImpersonateAdminHandler $impersonateHandler
     ) {
         $this->listHandler            = $listHandler;
         $this->getHandler             = $getHandler;
@@ -79,6 +85,7 @@ final class PlatformController
         $this->listAdminsHandler      = $listAdminsHandler;
         $this->createAdminHandler     = $createAdminHandler;
         $this->deactivateAdminHandler = $deactivateAdminHandler;
+        $this->impersonateHandler     = $impersonateHandler;
     }
 
     public function listStores(Request $request, Response $response): Response
@@ -180,5 +187,16 @@ final class PlatformController
     public function stats(Request $request, Response $response): Response
     {
         return $this->json($response, $this->statsHandler->handle(new GetStatsQuery()));
+    }
+
+    public function impersonate(Request $request, Response $response, array $args): Response
+    {
+        $adminId = (string) ($args['adminId'] ?? '');
+        try {
+            $result = $this->impersonateHandler->handle(new ImpersonateAdminCommand($adminId));
+        } catch (\RuntimeException $e) {
+            return $this->json($response, ['error' => 'Admin not found.'], 404);
+        }
+        return $this->json($response, $result);
     }
 }

@@ -1,12 +1,17 @@
 <template>
-  <div :class="isDark ? 'dark' : ''">
-    <router-view />
-  </div>
+  <router-view />
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { watch } from 'vue'
 import { useAdminStore } from '@/stores/auth.js'
+
 const admin = useAdminStore()
-const isDark = computed(() => admin.darkMode)
+
+function applyDark(val) {
+  document.documentElement.classList.toggle('dark', val)
+}
+
+applyDark(admin.darkMode)
+watch(() => admin.darkMode, applyDark)
 </script>

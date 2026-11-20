@@ -16,5 +16,6 @@ $group->group('/platform', function (RouteCollectorProxy $pla): void {
     $pla->get('/stores/{id}/admins',        [PlatformController::class, 'listStoreAdmins']);
     $pla->post('/stores/{id}/admins',       [PlatformController::class, 'createStoreAdmin']);
     $pla->delete('/admins/{adminId}',       [PlatformController::class, 'deactivateAdmin']);
+    $pla->post('/admins/{adminId}/impersonate', [PlatformController::class, 'impersonate']);
     $pla->get('/stats',                     [PlatformController::class, 'stats']);
 })->add(PlatformAdminMiddleware::class)->add(JwtAuthMiddleware::class);

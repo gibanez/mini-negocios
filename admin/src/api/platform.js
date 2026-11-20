@@ -9,5 +9,6 @@ export const platform = {
   activateStore:   (id)           => api.post(`/platform/stores/${id}/activate`),
   listAdmins:      (storeId)      => api.get(`/platform/stores/${storeId}/admins`),
   createAdmin:     (storeId, data)=> api.post(`/platform/stores/${storeId}/admins`, data),
-  deactivateAdmin: (adminId)      => api.delete(`/platform/admins/${adminId}`),
+  deactivateAdmin:  (adminId)      => api.delete(`/platform/admins/${adminId}`),
+  impersonate:      (adminId)      => api.post(`/platform/admins/${adminId}/impersonate`),
 }

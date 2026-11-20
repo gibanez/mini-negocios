@@ -27,20 +27,32 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="Acciones" width="90" align="center">
+        <el-table-column label="Acciones" width="140" align="center">
           <template #default="{ row }">
-            <el-popconfirm
-              v-if="row.status === 'active'"
-              title="¿Desactivar este usuario?"
-              confirm-button-text="Sí, desactivar"
-              cancel-button-text="Cancelar"
-              confirm-button-type="danger"
-              @confirm="doDeactivate(row.id)"
-            >
-              <template #reference>
-                <el-button size="small" type="danger" :icon="Delete" circle />
-              </template>
-            </el-popconfirm>
+            <el-button-group>
+              <el-tooltip content="Ingresar como este usuario">
+                <el-button
+                  size="small"
+                  type="primary"
+                  :icon="View"
+                  :loading="impersonating === row.id"
+                  :disabled="row.status !== 'active'"
+                  @click="doImpersonate(row)"
+                />
+              </el-tooltip>
+              <el-popconfirm
+                v-if="row.status === 'active'"
+                title="¿Desactivar este usuario?"
+                confirm-button-text="Sí, desactivar"
+                cancel-button-text="Cancelar"
+                confirm-button-type="danger"
+                @confirm="doDeactivate(row.id)"
+              >
+                <template #reference>
+                  <el-button size="small" type="danger" :icon="Delete" circle />
+                </template>
+              </el-popconfirm>
+            </el-button-group>
           </template>
         </el-table-column>
       </el-table>
@@ -94,7 +106,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { ArrowLeft, Plus, Delete } from '@element-plus/icons-vue'
+import { ArrowLeft, Plus, Delete, View } from '@element-plus/icons-vue'
 import { platform } from '@/api/platform.js'
 
 const router    = useRouter()
@@ -102,6 +114,22 @@ const route     = useRoute()
 const admins    = ref([])
 const loading   = ref(true)
 const storeName = ref('')
+
+const impersonating = ref('')
+
+async function doImpersonate(row) {
+  impersonating.value = row.id
+  try {
+    const data = await platform.impersonate(row.id)
+    localStorage.setItem('token', data.token)
+    localStorage.setItem('user',  JSON.stringify(data.user))
+    window.open('/', '_blank')
+  } catch (e) {
+    ElMessage.error('No se pudo impersonar el usuario.')
+  } finally {
+    impersonating.value = ''
+  }
+}
 
 const createDialog = reactive({
   visible: false,
