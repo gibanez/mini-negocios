@@ -23,7 +23,6 @@ admin/node_modules/
 # Builds de frontend
 /public/_astro/
 /public/assets/
-/public/admin/assets/
 
 # Herramientas
 .phpunit.result.cache
